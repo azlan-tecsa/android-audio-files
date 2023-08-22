@@ -1,6 +1,6 @@
 # android-audio-files
 
-A capacitor plugin to access the MediaStore.Audio
+A capacitor plugin to access the MediaStore.Audio API
 
 ## Install
 

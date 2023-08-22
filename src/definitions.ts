@@ -1,3 +1,7 @@
 export interface AudioFilesPlugin {
-  echo(options: { value: string }): Promise<{ value: string }>;
+  listAudioFiles(): AudioFilesList;
+}
+
+export interface AudioFilesList {
+  files: string[]
 }
