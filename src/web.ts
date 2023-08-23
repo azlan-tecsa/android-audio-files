@@ -1,9 +1,9 @@
 import { WebPlugin } from '@capacitor/core';
 
-import type { AudioFilesList, AudioFilesPlugin } from './definitions';
+import type { FileIds, AudioFilesPlugin } from './definitions';
 
 export class AudioFilesWeb extends WebPlugin implements AudioFilesPlugin {
-  listAudioFiles(): AudioFilesList {
-    return <AudioFilesList>{ files: [] };
+  async listAudioFiles(): Promise<{ files: FileIds }> {
+    return Promise.resolve(<{ files: FileIds }>{ files: {} });
   }
 }

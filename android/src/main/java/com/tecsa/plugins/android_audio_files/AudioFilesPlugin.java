@@ -3,6 +3,7 @@ package com.tecsa.plugins.android_audio_files;
 import android.Manifest;
 import android.database.Cursor;
 import android.provider.MediaStore;
+import android.util.Log;
 
 import com.getcapacitor.JSObject;
 import com.getcapacitor.PermissionState;
@@ -29,27 +30,32 @@ import java.util.ArrayList;
 )
 public class AudioFilesPlugin extends Plugin {
 
-    @PluginMethod
+    @PluginMethod(returnType = PluginMethod.RETURN_PROMISE)
     public void listAudioFiles(PluginCall call) {
         if(getPermissionState("storage") == PermissionState.GRANTED) {
-            ArrayList<String> audioList = new ArrayList<>();
-            String[] strings = {MediaStore.Audio.Media._ID, MediaStore.Audio.Media.DISPLAY_NAME};
-            Cursor cursor = getActivity().getContentResolver().query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, strings, null, null, null);
+            JSObject audioList = new JSObject();
+            String[] strings = {MediaStore.Audio.Media._ID, MediaStore.Audio.Media.DISPLAY_NAME, MediaStore.Audio.Media.RELATIVE_PATH};
+            Cursor externalCursor = getActivity().getContentResolver().query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, strings, null, null, null);
 
-            if (cursor != null) {
-                if (cursor.moveToFirst()) {
+            if(externalCursor != null) {
+                if(externalCursor.moveToFirst()) {
                     do {
-                        int audioIndex = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DISPLAY_NAME);
-                        audioList.add(cursor.getString(audioIndex));
-                    } while (cursor.moveToNext());
+                        int idIndex = externalCursor.getColumnIndexOrThrow(MediaStore.Audio.Media._ID);
+                        int nameIndex = externalCursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DISPLAY_NAME);
+                        int pathIndex = externalCursor.getColumnIndexOrThrow(MediaStore.Audio.Media.RELATIVE_PATH);
+                        JSObject fileDetails = new JSObject()
+                                .put("name", externalCursor.getString(nameIndex))
+                                .put("path", externalCursor.getString(pathIndex));
+                        audioList.put(externalCursor.getString(idIndex), fileDetails);
+                    } while(externalCursor.moveToNext());
                 }
             }
-            cursor.close();
+            externalCursor.close();
 
             JSObject ret = new JSObject();
-            ret.put("files", audioList.toArray());
+            ret.put("files", audioList);
             call.resolve(ret);
-        }else {
+        } else {
             requestPermissionForAlias("storage", call, "storagePermissionCallback");
         }
     }
