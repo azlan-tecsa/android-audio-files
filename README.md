@@ -24,10 +24,10 @@ npx cap sync
 ### listAudioFiles()
 
 ```typescript
-listAudioFiles() => Promise<{ files: FileIds; }>
+listAudioFiles() => Promise<{ [id: string]: FileDetails; }>
 ```
 
-**Returns:** <code>Promise&lt;{ files: <a href="#fileids">FileIds</a>; }&gt;</code>
+**Returns:** <code>Promise&lt;{ [id: string]: <a href="#filedetails">FileDetails</a>; }&gt;</code>
 
 --------------------
 
@@ -35,6 +35,12 @@ listAudioFiles() => Promise<{ files: FileIds; }>
 ### Interfaces
 
 
-#### FileIds
+#### FileDetails
+
+| Prop                | Type                |
+| ------------------- | ------------------- |
+| **`name`**          | <code>string</code> |
+| **`relative_path`** | <code>string</code> |
+| **`full_path`**     | <code>string</code> |
 
 </docgen-api>

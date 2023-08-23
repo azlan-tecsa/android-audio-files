@@ -1,12 +1,9 @@
 export interface AudioFilesPlugin {
-  listAudioFiles(): Promise<{ files: FileIds }>;
-}
-
-export interface FileIds {
-  [key: string]: FileDetails
+  listAudioFiles(): Promise<{ [id: string]: FileDetails }>;
 }
 
 export interface FileDetails {
   name: string,
-  path: string
+  relative_path: string,
+  full_path: string
 }

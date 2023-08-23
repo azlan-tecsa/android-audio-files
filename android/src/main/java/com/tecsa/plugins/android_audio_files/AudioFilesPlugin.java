@@ -34,7 +34,7 @@ public class AudioFilesPlugin extends Plugin {
     public void listAudioFiles(PluginCall call) {
         if(getPermissionState("storage") == PermissionState.GRANTED) {
             JSObject audioList = new JSObject();
-            String[] strings = {MediaStore.Audio.Media._ID, MediaStore.Audio.Media.DISPLAY_NAME, MediaStore.Audio.Media.RELATIVE_PATH};
+            String[] strings = {MediaStore.Audio.Media._ID, MediaStore.Audio.Media.DISPLAY_NAME, MediaStore.Audio.Media.RELATIVE_PATH, MediaStore.Audio.Media.DATA};
             Cursor externalCursor = getActivity().getContentResolver().query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, strings, null, null, null);
 
             if(externalCursor != null) {
@@ -43,18 +43,18 @@ public class AudioFilesPlugin extends Plugin {
                         int idIndex = externalCursor.getColumnIndexOrThrow(MediaStore.Audio.Media._ID);
                         int nameIndex = externalCursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DISPLAY_NAME);
                         int pathIndex = externalCursor.getColumnIndexOrThrow(MediaStore.Audio.Media.RELATIVE_PATH);
+                        int dataIndex = externalCursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA);
                         JSObject fileDetails = new JSObject()
                                 .put("name", externalCursor.getString(nameIndex))
-                                .put("path", externalCursor.getString(pathIndex));
+                                .put("relative_path", externalCursor.getString(pathIndex))
+                                .put("full_path", externalCursor.getString(dataIndex));
                         audioList.put(externalCursor.getString(idIndex), fileDetails);
                     } while(externalCursor.moveToNext());
                 }
             }
             externalCursor.close();
 
-            JSObject ret = new JSObject();
-            ret.put("files", audioList);
-            call.resolve(ret);
+            call.resolve(audioList);
         } else {
             requestPermissionForAlias("storage", call, "storagePermissionCallback");
         }
