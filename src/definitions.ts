@@ -4,6 +4,7 @@ export interface AudioFilesPlugin {
 
 export interface FileDetails {
   name: string,
+  artist: string,
   relative_path: string,
   full_path: string
 }

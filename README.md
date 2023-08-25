@@ -40,6 +40,7 @@ listAudioFiles() => Promise<{ [id: string]: FileDetails; }>
 | Prop                | Type                |
 | ------------------- | ------------------- |
 | **`name`**          | <code>string</code> |
+| **`artist`**        | <code>string</code> |
 | **`relative_path`** | <code>string</code> |
 | **`full_path`**     | <code>string</code> |
 
