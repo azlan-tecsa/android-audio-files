@@ -1,6 +1,6 @@
 {
   "name": "android-audio-files",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "A capacitor plugin to access the MediaStore.Audio",
   "main": "dist/plugin.cjs.js",
   "module": "dist/esm/index.js",
