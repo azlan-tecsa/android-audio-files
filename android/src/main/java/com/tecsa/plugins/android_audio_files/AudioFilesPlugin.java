@@ -50,11 +50,14 @@ public class AudioFilesPlugin extends Plugin {
                     int artistIndex = externalCursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST);
                     int pathIndex = externalCursor.getColumnIndexOrThrow(MediaStore.Audio.Media.RELATIVE_PATH);
                     int dataIndex = externalCursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA);
+
+                    String fullName = externalCursor.getString(nameIndex);
                     JSObject fileDetails = new JSObject()
-                        .put("name", externalCursor.getString(nameIndex))
+                        .put("name", fullName.substring(0, fullName.lastIndexOf('.')))
                         .put("artist", externalCursor.getString(artistIndex))
                         .put("relative_path", externalCursor.getString(pathIndex))
                         .put("full_path", externalCursor.getString(dataIndex));
+
                     audioList.put(externalCursor.getString(idIndex), fileDetails);
                 } while(externalCursor.moveToNext());
             }
